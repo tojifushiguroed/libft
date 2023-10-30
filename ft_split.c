@@ -12,34 +12,36 @@
 
 #include "libft.h"
 
-static size_t	ft_looklen(const char *s, char c)
+static size_t	ft_toklen(const char *s, char c)
 {
-	size_t	line;
+	size_t	ret;
 
-	line = 0;
+	ret = 0;
 	while (*s)
 	{
 		if (*s != c)
 		{
-			++line;
+			++ret;
 			while (*s && *s != c)
 				++s;
 		}
 		else
 			++s;
 	}
-	return (line);
+	return (ret);
 }
 
 char	**ft_split(const char *s, char c)
 {
-	char	**line;
+	char	**ret;
+	size_t	i;
 	size_t	len;
 
 	if (!s)
 		return (0);
-	line = malloc(sizeof(char *) * (ft_looklen(s, c) + 1));
-	if (!line)
+	i = 0;
+	ret = malloc(sizeof(char *) * (ft_toklen(s, c) + 1));
+	if (!ret)
 		return (0);
 	while (*s)
 	{
@@ -48,11 +50,11 @@ char	**ft_split(const char *s, char c)
 			len = 0;
 			while (*s && *s != c && ++len)
 				++s;
-			*line++ = ft_substr(s - len, 0, len);
+			ret[i++] = ft_substr(s - len, 0, len);
 		}
 		else
 			++s;
 	}
-	*line = 0;
-	return (line);
+	ret[i] = 0;
+	return (ret);
 }
